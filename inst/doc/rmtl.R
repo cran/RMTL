@@ -1,10 +1,13 @@
-## ----setup, include = FALSE----------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- echo=FALSE, results='markup'---------------------------------------
+## ----setup--------------------------------------------------------------------
+library(RMTL)
+
+## ---- echo=FALSE, results='markup'--------------------------------------------
 my.df <- data.frame(Omega=c("$||W||_1$", "$||W||_{2,1}$", "$||W||_*$", "$||WG||_F^2$", "$tr(W^TW)-tr(F^TW^TWF)$"),
                     Regularization=c("**Lasso**", "**L21**", "**Trace**", "**Graph**", "**CMTL**"),  
                     Problem=c("R/C", "R/C", "R/C", "R/C", "R/C"), 
@@ -42,7 +45,7 @@ print (paste0("estimated lam1: ", cvfitr$Lam1.min))
 #plot CV errors across lam1 sequence in the log space
 plot(cvfitr)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 datac <- Create_simulated_data(Regularization="L21", type="Classification", n=100)
 # CV without parallel computing
 start_time <- Sys.time()
@@ -80,7 +83,7 @@ str(model$opts)
 #plot the historical objective values in the optimization
 plotObj(model)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # create simulated data for regression and classification problem
 datar <- Create_simulated_data(Regularization="L21", type="Regression")
 datac <- Create_simulated_data(Regularization="L21", type="Classification")
@@ -132,7 +135,7 @@ for (i in Lam1_seq){
 }
 matplot(mat, type="l", xlab="Lambda1", ylab="Significance of Each Predictor")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #warm-start
 model1<-MTL(datar$X, datar$Y, type="Regression", Regularization="L21", Lam1=0.01, Lam1_seq=10^seq(0,-4, -0.1))
 str(model1$W)
@@ -141,7 +144,7 @@ str(model1$W)
 model2<-MTL(datar$X, datar$Y, type="Regression", Regularization="L21", Lam1=0.01)
 str(model2$W)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 data <- Create_simulated_data(Regularization="Trace", type="Regression", p=20, n=10, t=100)
 names(data)
 # number of tasks
